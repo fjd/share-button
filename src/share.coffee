@@ -30,19 +30,22 @@ $.fn.share = (opts) ->
   config.fb_text      = set_opt('facebook', 'text')
   config.fb_image     = set_opt('facebook', 'image')
   config.gplus_url    = set_opt('gplus', 'url')
-
+  config.adn_url      = set_opt('adn', 'url')
+  config.adn_text     = set_opt('adn', 'text')
+  
   # private
   config.selector = ".#{$(@).attr('class')}"
 
   # correct common errors
   config.twitter_text = encodeURIComponent(config.twitter_text)
+  config.adn_text = encodeURIComponent(config.adn_text)
   config.app_id = config.app_id.toString() if typeof config.app_id == 'integer'
 
   # inject the css if necessary
   $('head').append(getStyles(config)) unless $('meta[name=sharer]').length
 
   # inject the html
-  $(@).html("<label class='entypo-#{config.button_icon}'><span>#{config.button_text}</span></label><div class='social'><ul><li class='entypo-twitter' data-network='twitter'></li><li class='entypo-facebook' data-network='facebook'></li><li class='entypo-gplus' data-network='gplus'></li></ul></div>")
+  $(@).html("<label class='entypo-#{config.button_icon}'><span>#{config.button_text}</span></label><div class='social'><ul><li class='entypo-twitter' data-network='twitter'></li><li class='entypo-facebook' data-network='facebook'></li><li class='entypo-gplus' data-network='gplus'></li><li class='entypo-adn' data-network='adn'></li></ul></div>")
 
   # set up facebook api if necessary
   if !window.FB && config.app_id
@@ -53,7 +56,8 @@ $.fn.share = (opts) ->
     twitter: "http://twitter.com/intent/tweet?text=#{config.twitter_text}&url=#{config.twitter_url}"
     facebook: "https://www.facebook.com/sharer/sharer.php?u=#{config.fb_url}"
     gplus: "https://plus.google.com/share?url=#{config.gplus_url}"
-
+    adn: "https://alpha.app.net/intent/post/?text=#{config.adn_text}&url=#{config.adn_url}"
+  
   # popup and share links
 
   bubble = $(@).parent().find('.social')
